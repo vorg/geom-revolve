@@ -1,6 +1,6 @@
 # geom-revolve
 
-[![stable](http://badges.github.io/stability-badges/dist/stable.svg)](http://github.com/badges/stability-badges)
+![](screenshot.jpg)
 
 Create geometry by revolving path around Y axis
 
