@@ -13,9 +13,9 @@ npm install geom-resolve --save
 #### `geometry = revolve(path, [numSteps, rotation])`
 
 Parameters:  
-`path` - list of [x, y, z] defining the path to revolve
-`numSteps` - integer, defaults to 16
-`rotation` - angle to rotate by, defaults 2 PI
+`path` - list of [x, y, z] defining the path to revolve  
+`numSteps` - integer, defaults to 16  
+`rotation` - angle to rotate by, defaults 2 PI  
 
 ## Example
 
