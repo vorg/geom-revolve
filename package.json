@@ -1,0 +1,31 @@
+{
+  "name": "geom-revolve",
+  "version": "1.0.0",
+  "description": "Create geometry by revolving path around Y axis",
+  "main": "index.js",
+  "license": "MIT",
+  "author": {
+    "name": "Marcin Ignac",
+    "email": "marcin.ignac@gmail.com",
+    "url": "https://github.com/vorg"
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "scripts": {
+    "test": "node test.js"
+  },
+  "keywords": [
+    "webgl,",
+    "pex,",
+    "stackgl,",
+    "geometry"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/vorg/geom-revolve.git"
+  },
+  "homepage": "https://github.com/vorg/geom-revolve",
+  "bugs": {
+    "url": "https://github.com/vorg/geom-revolve/issues"
+  }
+}
