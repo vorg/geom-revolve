@@ -7,7 +7,7 @@ Create geometry by revolving path around Y axis
 ## Usage
 
 ```bash
-npm install geom-resolve --save
+npm install geom-revolve --save
 ```
 
 #### `geometry = revolve(path, [numSteps, rotation])`
