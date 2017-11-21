@@ -10,12 +10,14 @@ Create geometry by revolving path around Y axis
 npm install geom-revolve --save
 ```
 
-#### `geometry = revolve(path, [numSteps, rotation])`
+#### `revolve(path, [numSteps, rotation])`
 
 Parameters:  
 `path` - list of [x, y, z] defining the path to revolve  
 `numSteps` - integer, defaults to 16  
 `rotation` - angle to rotate by, defaults 2 PI  
+
+Returns geometry
 
 ## Example
 
