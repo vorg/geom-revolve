@@ -1,4 +1,5 @@
 import { avec3 } from "pex-math";
+import typedArrayConstructor from "typed-array-constructor";
 
 function revolve(path, numSteps = 16, angle = 2 * Math.PI) {
   const isFlatArray = !path[0]?.length;
@@ -14,7 +15,9 @@ function revolve(path, numSteps = 16, angle = 2 * Math.PI) {
   const cellCount = 2 * (numSteps - (loop ? 0 : 1)) * (numPoints - 1);
 
   const positions = isFlatArray ? new path.constructor(positionCount * 3) : [];
-  const cells = isFlatArray ? new Uint32Array(cellCount * 3) : [];
+  const cells = isFlatArray
+    ? new (typedArrayConstructor(positionCount))(cellCount * 3)
+    : [];
 
   const n = loop ? numSteps : numSteps > 1 ? numSteps - 1 : 1;
 
