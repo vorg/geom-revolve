@@ -16,14 +16,8 @@ npm install geom-revolve
 import revolve from "geom-revolve";
 
 const path = new Float32Array([
-  0.0, 0.0, 0.0,
-  0.1, 0.0, 0.0,
-  0.2, 0.2, 0.0,
-  0.3, 0.5, 0.0,
-  0.3, 0.7, 0.0,
-  0.1, 0.8, 0.0,
-  0.1, 1.0, 0.0,
-  0.0, 1.0, 0.0,
+  0.0, 0.0, 0.0, 0.1, 0.0, 0.0, 0.2, 0.2, 0.0, 0.3, 0.5, 0.0, 0.3, 0.7, 0.0,
+  0.1, 0.8, 0.0, 0.1, 1.0, 0.0, 0.0, 1.0, 0.0,
 ]);
 
 const geometry = revolve(path);
@@ -42,7 +36,9 @@ const geometry = revolve(path);
 
 **Returns**
 
-geometry: `{ positions: TypedArray | Array | Array<[x, y, z]>, cells: TypedArray | Array | Array<[x, y, z]> }` - the revolved geometry.
+geometry: `{ positions: TypedArray | Array<[x, y, z]>, cells: TypedArray | Array<[x, y, z]> }` - the revolved geometry.
+
+Returned cells will be either Array of Arrays or TypedArray depending on the path data.
 
 ## License
 
