@@ -1,56 +1,48 @@
 # geom-revolve
 
+Create a simplicial complex geometry by revolving a path around Y axis.
+
 ![](screenshot.jpg)
 
-Create geometry by revolving path around Y axis
+## Installation
+
+```bash
+npm install geom-revolve
+```
 
 ## Usage
 
-```bash
-npm install geom-revolve --save
+```js
+import revolve from "geom-revolve";
+
+const path = new Float32Array([
+  0.0, 0.0, 0.0,
+  0.1, 0.0, 0.0,
+  0.2, 0.2, 0.0,
+  0.3, 0.5, 0.0,
+  0.3, 0.7, 0.0,
+  0.1, 0.8, 0.0,
+  0.1, 1.0, 0.0,
+  0.0, 1.0, 0.0,
+]);
+
+const geometry = revolve(path);
+// => { positions: Float32Array(384), cells: Uint32Array(672) }
 ```
 
-#### `revolve(path, [numSteps, rotation])`
+## API
 
-Parameters:  
-`path` - list of [x, y, z] defining the path to revolve  
-`numSteps` - integer, defaults to 16  
-`rotation` - angle to rotate by, defaults 2 PI  
+#### `revolve(path, [numSteps], [angle]): geometry`
 
-Returns geometry
+**Parameters**
 
-## Example
+- path: `TypedArray | Array | Array<[x, y, z]>` - positions defining the path to revolve.
+- numSteps: `number` (default: `16`) - rotation subdivisions.
+- angle: `number` (default: `Math.PI * 2`) - angle to rotate by.
 
-```javascript
-var revolve = require('geom-revolve')
+**Returns**
 
-const path = [
-  [0.0, 0.0, 0.0], [0.1, 0.0, 0.0], [0.2, 0.2, 0.0],
-  [0.3, 0.5, 0.0], [0.3, 0.7, 0.0], [0.1, 0.8, 0.0],
-  [0.1, 1.0, 0.0], [0.0, 1.0, 0.0]
-]
-
-const geometry = revolve(path, 16)
-```
-
-`geometry` will have the following structure:
-
-```
-{
-  positions: [ [x, y, z], [x, y, z], ... ],
-  cells: [ [a, b, c], [a, b, c], ... ],
-}
-```
-
-## Demo
-
-Download or clone this repo and run:
-
-```
-cd example
-npm install
-npm start
-```
+geometry: `{ positions: TypedArray | Array | Array<[x, y, z]>, cells: TypedArray | Array | Array<[x, y, z]> }` - the revolved geometry.
 
 ## License
 
