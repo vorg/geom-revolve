@@ -8,6 +8,7 @@ const State = {
   angle: Math.PI * 2,
   steps: 16,
   pause: false,
+  loop: false,
   mode: 0,
   shadings: ["standard derivative", "uvs"],
 };
@@ -67,7 +68,11 @@ const wireframeCmdOptions = {
 };
 
 const update = () => {
-  const g = revolve(path, { numSteps: State.steps, angle: State.angle });
+  const g = revolve(path, {
+    numSteps: State.steps,
+    angle: State.angle,
+    loop: State.loop,
+  });
   g.edges = computeEdges(g.cells);
   console.log(g);
 
@@ -159,6 +164,7 @@ const gui = createGUI(ctx);
 
 gui.addParam("Angle", State, "angle", { min: 0, max: Math.PI * 2 }, update);
 gui.addParam("Steps", State, "steps", { min: 0, max: 64, step: 1 }, update);
+gui.addParam("Loop", State, "loop", {}, update);
 gui.addParam("Pause", State, "pause");
 gui.addRadioList(
   "Mode",
