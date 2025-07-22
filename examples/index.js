@@ -2,12 +2,14 @@ import revolve from "../index.js";
 import createContext from "pex-context";
 import createGUI from "pex-gui";
 import { mat4 } from "pex-math";
-// import computeEdges from "geom-edges";
+import computeEdges from "geom-edges";
 
 const State = {
   angle: Math.PI * 2,
   steps: 16,
   pause: false,
+  mode: 0,
+  shadings: ["standard derivative", "uvs"],
 };
 
 const W = 1280;
@@ -44,11 +46,13 @@ const path = [
   [0.1, 0.8, 0.0],
   [0.1, 1.0, 0.0],
   [0.0, 1.0, 0.0],
-].flat();
+]
+// ].flat();
 
 const cmdOptions = {
   attributes: {
     aPosition: ctx.vertexBuffer([]),
+    aUv: ctx.vertexBuffer([]),
   },
   indices: ctx.indexBuffer([]),
   uniforms: {
@@ -62,30 +66,16 @@ const wireframeCmdOptions = {
   indices: ctx.indexBuffer([]),
 };
 
-function computeEdges(cells, stride = 3) {
-  const edges = new Uint32Array(cells.length * 2);
-
-  let cellIndex = 0;
-
-  for (let i = 0; i < cells.length; i += stride) {
-    for (let j = 0; j < stride; j++) {
-      const a = cells[i + j];
-      const b = cells[i + ((j + 1) % stride)];
-      edges[cellIndex] = Math.min(a, b);
-      edges[cellIndex + 1] = Math.max(a, b);
-      cellIndex += 2;
-    }
-  }
-  return edges;
-}
-
 const update = () => {
-  const g = revolve(path, State.steps, State.angle);
+  const g = revolve(path, { numSteps: State.steps, angle: State.angle });
   g.edges = computeEdges(g.cells);
   console.log(g);
 
   ctx.update(cmdOptions.attributes.aPosition, {
     data: g.positions,
+  });
+  ctx.update(cmdOptions.attributes.aUv, {
+    data: g.uvs,
   });
   ctx.update(cmdOptions.indices, {
     data: g.cells,
@@ -109,15 +99,14 @@ uniform mat4 uViewMatrix;
 uniform mat4 uModelMatrix;
 
 in vec3 aPosition;
+in vec2 aUv;
 
-out vec4 vColor;
 out vec3 vPositionWorld;
+out vec2 vUv;
 
 void main () {
-  vColor = vec4(1.0, 0.0, 0.0, 1.0);
-
   vPositionWorld = (uModelMatrix * vec4(aPosition, 1.0)).xyz;
-
+  vUv = aUv;
   gl_Position = uProjectionMatrix * uViewMatrix * vec4(vPositionWorld, 1.0);
 }`;
 
@@ -127,15 +116,22 @@ const drawMeshCmd = {
     frag: /* glsl */ `#version 300 es
 precision highp float;
 
-in vec4 vColor;
+uniform float uMode;
+
 in vec3 vPositionWorld;
+in vec2 vUv;
+
 out vec4 fragColor;
 
 void main() {
-  vec3 fdx = vec3(dFdx(vPositionWorld.x), dFdx(vPositionWorld.y), dFdx(vPositionWorld.z));
-  vec3 fdy = vec3(dFdy(vPositionWorld.x), dFdy(vPositionWorld.y), dFdy(vPositionWorld.z));
-  vec3 normal = normalize(cross(fdx, fdy));
-  fragColor = vec4(normal * 0.5 + 0.5, 1.0);
+  if (uMode == 0.0) {
+    vec3 fdx = vec3(dFdx(vPositionWorld.x), dFdx(vPositionWorld.y), dFdx(vPositionWorld.z));
+    vec3 fdy = vec3(dFdy(vPositionWorld.x), dFdy(vPositionWorld.y), dFdy(vPositionWorld.z));
+    vec3 normal = normalize(cross(fdx, fdy));
+    fragColor = vec4(normal * 0.5 + 0.5, 1.0);
+  }
+
+  if (uMode == 1.0) fragColor = vec4(vUv.xy, 0.0, 1.0);
 }
 `,
     depthTest: true,
@@ -164,6 +160,12 @@ const gui = createGUI(ctx);
 gui.addParam("Angle", State, "angle", { min: 0, max: Math.PI * 2 }, update);
 gui.addParam("Steps", State, "steps", { min: 0, max: 64, step: 1 }, update);
 gui.addParam("Pause", State, "pause");
+gui.addRadioList(
+  "Mode",
+  State,
+  "mode",
+  State.shadings.map((name, value) => ({ name, value })),
+);
 
 let dt = 0;
 
@@ -175,6 +177,7 @@ ctx.frame(() => {
   }
 
   ctx.submit(clearCmd);
+  cmdOptions.uniforms.uMode = State.mode;
   ctx.submit(drawMeshCmd, cmdOptions);
   ctx.submit(drawMeshWireframeCmd, { ...cmdOptions, ...wireframeCmdOptions });
 
