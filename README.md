@@ -26,13 +26,16 @@ const geometry = revolve(path);
 
 ## API
 
-#### `revolve(path, [numSteps], [angle]): geometry`
+#### `revolve(path, [options]): geometry`
 
 **Parameters**
 
 - path: `TypedArray | Array | Array<[x, y, z]>` - positions defining the path to revolve.
-- numSteps: `number` (default: `16`) - rotation subdivisions.
-- angle: `number` (default: `Math.PI * 2`) - angle to rotate by.
+
+- options: `{ numSteps: number, angle: number, loop: boolean }`:
+  - numSteps: `number` (default: `16`) - rotation subdivisions.
+  - angle: `number` (default: `Math.PI * 2`) - angle to rotate by.
+  - loop: `boolean` (default: `undefined`) - merges the seam but creates visual discontinuities with UVs so it is opt-in.
 
 **Returns**
 
