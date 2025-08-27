@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+# [3.0.0](https://github.com/vorg/geom-revolve/compare/v2.0.2...v3.0.0) (2025-08-27)
+
+
+### Features
+
+* add uv support ([5097b80](https://github.com/vorg/geom-revolve/commit/5097b80030a175f29b012bf09c3cb12739a8ec88)), closes [vorg/geom-revolve#2](https://github.com/vorg/geom-revolve/issues/2)
+
+
+### BREAKING CHANGES
+
+* make options an object + make loop option opt in
+
+
+
 ## [2.0.2](https://github.com/vorg/geom-revolve/compare/v2.0.1...v2.0.2) (2024-03-14)
 
 
